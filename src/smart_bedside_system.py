@@ -80,6 +80,11 @@ class SmartBedsideSystem:
         Args: angle (float): The target valve angle in degrees, between 0 and 180 degrees, inclusive.
         Raises: SmartBedsideError: If the target angle is outside the valid range of 0 to 180 degrees.
         """
+        if angle < 0.0 or angle > 180.0:
+            raise SmartBedsideError("Valve angle must be between 0 and 180 degrees")
+        duty_cycle = 5.0 + (angle / 180.0) * 5.0
+        self.o2_servo.ChangeDutyCycle(duty_cycle)
+        self.o2_valve_angle = angle
         # See User Story #4.
 
     def manage_oxygen_valve(self) -> None:
